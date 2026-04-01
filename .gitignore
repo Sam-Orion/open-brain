@@ -35,9 +35,9 @@ yarn-error.log*
 next-env.d.ts
 
 # agent files (can be committed)
-# Gemini.md
-# CLAUDE.md
-# AGENTS.md
+Gemini.md
+CLAUDE.md
+AGENTS.md
 # Memory persistence mapping
 /memories/repo/
 .env.local
