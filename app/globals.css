@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background: #F8FAFC;
+  --foreground: #18181B;
+  --surface: #FAFAFA;
+  --muted: #A1A1AA;
+  --border: #E4E4E7;
+  
+  --primary: #6366F1;
+  --accent: #10B981;
+  --destructive: #EF4444;
+  --tag-bg: #9492DB;
+  --tag-text: #7164C0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #09090B;
+    --foreground: #FAFAFA;
+    --surface: #18181B;
+    --muted: #A1A1AA;
+    --border: #27272A;
   }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-destructive: var(--destructive);
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-text: var(--tag-text);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  
+  --shadow-hard: 0 4px 0 rgba(0,0,0,0.1);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+*, ::before, ::after {
+  border-color: var(--border);
 }
