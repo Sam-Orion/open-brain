@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #F8FAFC;
   --foreground: #18181B;
@@ -14,14 +16,12 @@
   --tag-text: #7164C0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090B;
-    --foreground: #FAFAFA;
-    --surface: #18181B;
-    --muted: #A1A1AA;
-    --border: #27272A;
-  }
+.dark {
+  --background: #09090B;
+  --foreground: #FAFAFA;
+  --surface: #18181B;
+  --muted: #A1A1AA;
+  --border: #27272A;
 }
 
 @theme {

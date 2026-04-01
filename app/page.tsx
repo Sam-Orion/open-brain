@@ -1,10 +1,21 @@
 import Link from 'next/link';
 
+import { ThemeToggle } from '@/components/theme-toggle';
+import { OpenBrainLogo } from '@/components/openbrain-logo';
+
 export default function LandingPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background transition-colors duration-500 ease-in-out px-6">
+      
+      {/* Theme Action Group */}
+      <div className="absolute top-6 right-6">
+        <ThemeToggle />
+      </div>
+
       <div className="flex w-full max-w-sm flex-col items-center text-center">
         
+        <OpenBrainLogo />
+
         {/* Hero Title */}
         <h1 className="text-[48px] font-[600] leading-tight text-foreground tracking-tight">
           OpenBrain
@@ -20,7 +31,7 @@ export default function LandingPage() {
           
           {/* Create Account Button (Primary Inverted) */}
           <Link 
-            href="/register"
+            href="/auth/register"
             className="flex h-[40px] flex-1 items-center justify-center bg-foreground text-background font-medium text-[14px] transition-colors duration-150 ease-linear hover:opacity-90 active:opacity-100 rounded-none border border-foreground"
           >
             Create Account

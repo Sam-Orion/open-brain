@@ -4,7 +4,8 @@
 ## 📌 Project Overview
 - **Name:** OpenBrain
 - **Description:** A minimalist second-brain app.
-- **Key Technologies:** Next.js 14 (App Router), Supabase, Supermemory, Tailwind CSS.
+- **Key Technologies:** Next.js 16.2.1 (App Router), React 19, Supabase, Supermemory, Tailwind CSS v4.
+- **Design System:** "Swiss Execution" PRD. Strict Grids, high contrast monochrome hierarchy, minimal typography (Geist / Geist Mono), sharp corners (max 2px radius), 1px borders, #10B981 (Emerald) for validation, #6366F1 (Indigo) for actions.
 
 ## 🧱 Core Architecture & Typings
 The app's data models are located in `types/index.ts`. All IDs strictly use `string` to align with Supabase UUIDs.
