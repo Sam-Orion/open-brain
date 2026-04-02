@@ -55,3 +55,21 @@ body {
 *, ::before, ::after {
   border-color: var(--border);
 }
+
+/* Override react-tweet default margins and paddings */
+.react-tweet-theme {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.react-tweet-theme > article {
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}

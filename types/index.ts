@@ -5,6 +5,8 @@ export interface Thought {
   type: string;
   tags: string[];
   description: string;
+  embed_url?: string;
+  thumbnail_url?: string;
 }
 
 export interface Profile {
@@ -17,7 +19,7 @@ export interface Profile {
 export interface ShareLink {
   id: string;
   token: string;
-  entityType: 'brain' | 'thought' | 'tag';
+  entityType: "brain" | "thought" | "tag";
   entityId: string;
   userId: string;
 }
