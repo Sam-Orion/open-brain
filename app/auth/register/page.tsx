@@ -254,12 +254,13 @@ export default function RegisterPage() {
       </div>
 
       {/* Footer */}
-      <div className="mt-6 text-center">
+      <div className="mt-8 text-center text-[13px]">
+        <span className="font-sans text-muted">Existing entity? </span>
         <Link 
-          href="/auth/login" 
-          className="font-sans text-[12px] text-[#A1A1AA] hover:text-foreground transition-colors"
+          href="/auth/signin" 
+          className="font-sans text-primary hover:opacity-80 transition-opacity"
         >
-          Existing entity? Sign in to Brain
+          Sign in to Brain
         </Link>
       </div>
     </main>

@@ -7,6 +7,11 @@
 - **Key Technologies:** Next.js 16.2.1 (App Router), React 19, Supabase, Supermemory, Tailwind CSS v4.
 - **Design System:** "Swiss Execution" PRD. Strict Grids, high contrast monochrome hierarchy, minimal typography (Geist / Geist Mono), sharp corners (max 2px radius), 1px borders, #10B981 (Emerald) for validation, #6366F1 (Indigo) for actions.
 
+### Design & Architecture Decisions
+- **Authentication**: Using Email/Username input locally tracked as `email`, but submitted to the backend as `identifier` for Supabase lookup functionality.
+- **Auth Redirects**: Specifically relying on the native server-side `redirect()` from Next.js server actions rather than client-side `useRouter()` router.push to reduce unnecessary client renders.
+- **Third-party Auth**: OAuth buttons (Google/Apple) intentionally omitted from the UI for minimalism and immediate core feature focus.
+
 ## 🧱 Core Architecture & Typings
 The app's data models are located in `types/index.ts`. All IDs strictly use `string` to align with Supabase UUIDs.
 

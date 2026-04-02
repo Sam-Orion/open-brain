@@ -2,17 +2,20 @@ import Link from 'next/link';
 
 import { ThemeToggle } from '@/components/theme-toggle';
 import { OpenBrainLogo } from '@/components/openbrain-logo';
+import { InteractiveGridBg } from '@/components/interactive-grid-bg';
 
 export default function LandingPage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background transition-colors duration-500 ease-in-out px-6">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background transition-colors duration-500 ease-in-out px-6 relative overflow-hidden">
       
+      <InteractiveGridBg />
+
       {/* Theme Action Group */}
-      <div className="absolute top-6 right-6">
+      <div className="absolute top-6 right-6 z-10">
         <ThemeToggle />
       </div>
 
-      <div className="flex w-full max-w-sm flex-col items-center text-center">
+      <div className="flex w-full max-w-sm flex-col items-center text-center relative z-10">
         
         <OpenBrainLogo />
 
@@ -39,7 +42,7 @@ export default function LandingPage() {
           
           {/* Sign In Button (Secondary Outlined) */}
           <Link 
-            href="/login"
+            href="/auth/signin"
             className="flex h-[40px] flex-1 items-center justify-center border border-border bg-transparent text-foreground font-medium text-[14px] transition-colors duration-150 ease-linear hover:bg-surface active:bg-transparent rounded-none"
           >
             Sign In
