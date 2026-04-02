@@ -36,6 +36,19 @@ export async function signUpAction(formData: FormData) {
 
   const supabase = await createSupabaseServerClient();
 
+  const getURL = () => {
+    let url =
+      process.env.NEXT_PUBLIC_SITE_URL ?? // Set this to your production URL
+      process.env.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel
+      "http://localhost:3000";
+
+    // Ensure it has a protocol
+    url = url.startsWith("http") ? url : `https://${url}`;
+    // Trim trailing slash if present
+    url = url.endsWith("/") ? url.slice(0, -1) : url;
+    return url;
+  };
+
   // Call Supabase Auth to Sign Up
   const { error } = await supabase.auth.signUp({
     email,
@@ -45,7 +58,7 @@ export async function signUpAction(formData: FormData) {
         username: username,
       },
       // Since it's App Router, email redirects typically land on the callback route.
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      emailRedirectTo: `${getURL()}/auth/callback`,
     },
   });
 
