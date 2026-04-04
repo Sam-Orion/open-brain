@@ -1,14 +1,40 @@
-import { Share2, Trash2, ExternalLink, PlaySquare, FileText, MessageSquare, FileBox, Link as LinkIcon } from "lucide-react";
+"use client";
+
+import { Share2, Trash2, ExternalLink, PlaySquare, FileText, MessageSquare, FileBox, Link as LinkIcon, Loader2 } from "lucide-react";
 import { Thought } from "@/types";
 import { cn } from "@/lib/utils";
-import React from 'react';
+import React, { useState } from 'react';
 import { Tweet } from 'react-tweet';
+import { useRouter } from "next/navigation";
 
 interface ThoughtCardProps {
   thought: Thought;
 }
 
 export function ThoughtCard({ thought }: ThoughtCardProps) {
+  const router = useRouter();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to completely erase this thought?")) return;
+    
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/thoughts/${thought.id}`, {
+        method: "DELETE",
+      });
+      
+      if (!res.ok) throw new Error("Failed to delete thought");
+      
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete thought. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   // Determine if it is a tweet based on the type
   const isTweet = thought.type?.toLowerCase() === "tweet" || thought.type?.toLowerCase() === "twitter";
 
@@ -76,14 +102,23 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
           <button className="text-zinc-400 hover:text-[#6366F1] transition-colors" title="Share Thought">
             <Share2 className="w-3.5 h-3.5" />
           </button>
-          <button className="text-zinc-400 hover:text-[#EF4444] transition-colors" title="Delete Thought">
-            <Trash2 className="w-3.5 h-3.5" />
+          <button 
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="text-zinc-400 hover:text-[#EF4444] transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+            title="Delete Thought"
+          >
+            {isDeleting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="w-3.5 h-3.5" />
+            )}
           </button>
         </div>
       </div>
 
       {/* Body / Media Embed */}
-      <div className="w-full relative bg-white dark:bg-black/20 text-sm font-sans text-zinc-700 dark:text-zinc-300">
+      <div className="w-full relative bg-white dark:bg-black/20 text-sm font-sans text-zinc-700 dark:text-zinc-300 max-h-[400px] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10">
         {(thought.type?.toLowerCase() === "video" || thought.type?.toLowerCase() === "youtube") ? (
           <div className="aspect-video w-full bg-black">
             <iframe 
@@ -104,14 +139,33 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
               <img src={thought.url} alt={thought.title} className="w-full object-cover" />
           </div>
         ) : isTweet && tweetId ? (
-          <div className="w-full flex justify-center bg-white dark:bg-[#18181B] overflow-hidden">
+          <div className="w-full flex justify-center bg-white dark:bg-[#18181B] p-[5px]">
             <div className="light sm:dark w-full">
               <Tweet id={tweetId} />
             </div>
           </div>
         ) : (
-          <div className="p-4 leading-relaxed line-clamp-4 overflow-hidden">
-             {thought.description || thought.url}
+          <div className="p-4 text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+             {thought.description ? (
+               <p className="whitespace-pre-wrap">{thought.description}</p>
+             ) : (
+               <div className="flex items-center justify-center p-4 rounded bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800" title={thought.url ? "Link" : "Resource URL not captured"}>
+                 {thought.url ? (
+                   <a 
+                     href={thought.url} 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     className="break-all text-[#6366F1] max-w-full hover:underline opacity-90 font-mono text-xs"
+                   >
+                     {thought.url}
+                   </a>
+                 ) : (
+                   <span className="text-zinc-400 dark:text-zinc-500 font-mono text-xs italic">
+                     URL unavailable
+                   </span>
+                 )}
+               </div>
+             )}
           </div>
         )}
       </div>
@@ -130,11 +184,11 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
         </div>
         
         <a 
-          href={thought.url} 
-          target="_blank" 
-          rel="noopener noreferrer"
+          href={thought.url || "#"} 
+          target={thought.url ? "_blank" : undefined}
+          rel={thought.url ? "noopener noreferrer" : undefined}
           className="text-zinc-400 hover:text-[#18181B] dark:hover:text-[#FAFAFA] transition-colors shrink-0"
-          title="Open Original"
+          title={thought.url ? "Open Original" : "URL not available"}
         >
           <ExternalLink className="w-3.5 h-3.5" />
         </a>

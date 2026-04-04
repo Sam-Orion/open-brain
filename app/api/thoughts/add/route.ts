@@ -66,6 +66,7 @@ export async function POST(request: Request) {
     > = {
       manualTags: sanitizedManualTags,
       type: mappedType,
+      url: url,
     };
     if (embedUrl) metaPayload.embed_url = embedUrl;
 
@@ -215,7 +216,11 @@ export async function POST(request: Request) {
     const mappedThought: Record<string, any> = {
       id: documentDetails.id,
       title: documentDetails.title || new URL(url).hostname || "Unknown Title",
-      description: documentDetails.summary || "",
+      description:
+        documentDetails.description ||
+        documentDetails.metadata?.description ||
+        documentDetails.summary ||
+        "",
       type:
         documentDetails.metadata?.type || documentDetails.type || mappedType,
       thumbnail_url: documentDetails.ogImage || null,

@@ -62,14 +62,14 @@ body {
   padding: 0 !important;
   max-width: none !important;
   width: 100% !important;
-  border-radius: 0 !important;
-  border: none !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border) !important;
   box-shadow: none !important;
 }
 .react-tweet-theme > article {
   margin: 0 !important;
   padding: 0 !important;
-  border-radius: 0 !important;
+  border-radius: 12px !important;
   border: none !important;
   box-shadow: none !important;
 }

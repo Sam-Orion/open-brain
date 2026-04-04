@@ -5,29 +5,32 @@ export interface ParsedSearchQuery {
 }
 
 export function parseSearchQuery(rawQuery: string): ParsedSearchQuery {
-  if (!rawQuery || typeof rawQuery !== 'string') {
-    return { cleanedQuery: '', tags: [], type: null };
+  if (!rawQuery || typeof rawQuery !== "string") {
+    return { cleanedQuery: "", tags: [], type: null };
   }
 
-  const tokens = rawQuery.trim().split(/\s+/);
   const tags: string[] = [];
   let type: string | null = null;
-  const semanticTokens: string[] = [];
 
-  for (const token of tokens) {
-    if (token.startsWith('/') && token.length > 1) {
-      // e.g. /react -> react
-      tags.push(token.substring(1));
-    } else if (token.startsWith('>') && token.length > 1) {
-      // e.g. >youtube -> youtube
-      type = token.substring(1).toLowerCase();
-    } else {
-      semanticTokens.push(token);
+  // Extract all >type and /tag modifiers, even if consecutive
+  const modifiers = rawQuery.match(/(>[\w-]+|\/[\w-]+)/g) || [];
+
+  for (const modifier of modifiers) {
+    if (modifier.startsWith("/")) {
+      tags.push(modifier.substring(1));
+    } else if (modifier.startsWith(">")) {
+      type = modifier.substring(1).toLowerCase();
     }
   }
 
+  // Remove all modifiers to get the cleaned query
+  const cleanedQuery = rawQuery
+    .replace(/(>[\w-]+|\/[\w-]+)/g, "")
+    .trim()
+    .replace(/\s+/g, " ");
+
   return {
-    cleanedQuery: semanticTokens.join(' ').trim(),
+    cleanedQuery,
     tags,
     type,
   };

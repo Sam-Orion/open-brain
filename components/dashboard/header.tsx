@@ -39,15 +39,16 @@ export default function Header({ user }: { user: any }) {
       );
     }
     
-    const parts = text.split(/(\s+)/);
+    const parts = text.split(/(>[\w-]+|\/[\w-]+)/g);
     return parts.map((part, i) => {
       // Regex purely for syntax highlighting visualization
       if (part.match(/^>[A-Za-z0-9_-]+$/)) {
         return (
           <span 
             key={i} 
-            className="bg-[#9492DB]/20 text-[#7164c0] px-1.5 py-0.5 rounded font-mono text-xs font-medium inline-flex items-center"
+            className="relative inline-block z-10 text-[#7164c0]"
           >
+            <span className="absolute inset-y-[-2px] inset-x-0 bg-[#9492DB]/20 rounded -z-10" />
             {part}
           </span>
         );
@@ -56,8 +57,9 @@ export default function Header({ user }: { user: any }) {
         return (
           <span 
             key={i} 
-            className="bg-indigo-500/10 text-indigo-500 px-1.5 py-0.5 rounded font-mono text-xs font-medium inline-flex items-center"
+            className="relative inline-block z-10 text-indigo-500"
           >
+            <span className="absolute inset-y-[-2px] inset-x-0 bg-indigo-500/10 rounded -z-10" />
             {part}
           </span>
         );
@@ -83,7 +85,8 @@ export default function Header({ user }: { user: any }) {
           <div className="relative flex-1 h-full mx-2 overflow-hidden">
             {/* Ghost input - absolute identical rendering element */}
             <div 
-              className="pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden text-sm font-sans tracking-wide text-zinc-900 dark:text-zinc-100"
+              className="pointer-events-none absolute inset-0 flex items-center whitespace-pre overflow-hidden text-sm font-mono tracking-normal p-0 m-0 text-zinc-900 dark:text-zinc-100"
+              style={{ wordSpacing: "4px" }}
               aria-hidden="true"
             >
               {renderVisualText(query)}
@@ -97,7 +100,8 @@ export default function Header({ user }: { user: any }) {
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              className="absolute inset-0 w-full h-full bg-transparent text-transparent caret-indigo-500 focus:outline-none focus:ring-0 text-sm font-sans placeholder-transparent w-full"
+              className="absolute inset-0 w-full h-full bg-transparent text-transparent caret-indigo-500 flex items-center focus:outline-none focus:ring-0 outline-none border-none p-0 m-0 text-sm font-mono tracking-normal placeholder-transparent"
+              style={{ wordSpacing: "4px" }}
               autoComplete="off"
               spellCheck="false"
             />

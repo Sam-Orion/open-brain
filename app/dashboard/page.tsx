@@ -88,5 +88,12 @@ export default async function DashboardPage({
     console.error("Error fetching thoughts:", error);
   }
 
-  return <ThoughtGrid initialThoughts={thoughts} />;
+  return (
+    <ThoughtGrid 
+      initialThoughts={thoughts} 
+      q={q} 
+      tag={tag} 
+      type={type} 
+    />
+  );
 }

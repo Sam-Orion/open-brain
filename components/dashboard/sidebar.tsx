@@ -31,9 +31,9 @@ export default function Sidebar() {
   }, []);
 
   const types = [
-    { label: 'Videos', id: 'video', icon: <PlaySquare className="w-4 h-4" /> },
+    { label: 'YouTube', id: 'youtube', icon: <PlaySquare className="w-4 h-4" /> },
     { label: 'Articles', id: 'article', icon: <FileText className="w-4 h-4" /> },
-    { label: 'Tweets', id: 'tweet', icon: <MessageSquare className="w-4 h-4" /> },
+    { label: 'Twitter', id: 'twitter', icon: <MessageSquare className="w-4 h-4" /> },
     { label: 'Docs', id: 'doc', icon: <FileBox className="w-4 h-4" /> },
   ];
 

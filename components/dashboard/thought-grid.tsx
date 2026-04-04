@@ -1,18 +1,14 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import { Thought } from "@/types";
 import { ThoughtCard } from "@/components/dashboard/thought-card";
 
 interface ThoughtGridProps {
   initialThoughts: Thought[];
+  q?: string;
+  tag?: string;
+  type?: string;
 }
 
-export function ThoughtGrid({ initialThoughts }: ThoughtGridProps) {
-  const searchParams = useSearchParams();
-  const q = searchParams.get('q');
-  const tag = searchParams.get('tag');
-  const type = searchParams.get('type');
+export function ThoughtGrid({ initialThoughts, q, tag, type }: ThoughtGridProps) {
 
   // Currently we use initialThoughts since server rendering passes this in.
   // Real implementation for instant Client-side Search SWR:

@@ -129,7 +129,7 @@ export async function GET(request: Request) {
         id: doc.id,
         title: doc.title || "Unknown Title",
         url: doc.url || meta.url || "",
-        description: doc.summary || "",
+        description: doc.description || meta.description || doc.summary || "",
         type: meta.type || doc.type || "article",
         thumbnail_url: doc.ogImage || meta.thumbnail_url || null,
         embed_url: meta.embed_url || null,
@@ -139,10 +139,13 @@ export async function GET(request: Request) {
 
     return NextResponse.json(thoughts);
   } catch (error: any) {
-    console.error("Sidebar Filtering API Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Internal Server Error" },
-      { status: 500 },
+    console.warn(
+      "Sidebar Filtering API Warning: API threw an error, returning empty array.",
+      error.message,
     );
+
+    // Return empty array gracefully on upstream failures (e.g. 401 from Supermemory)
+    // this prevents Next.js from throwing an error overlay in DashboardPage
+    return NextResponse.json([]);
   }
 }

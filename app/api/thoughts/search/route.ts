@@ -203,7 +203,12 @@ export async function GET(request: Request) {
         return {
           id: doc.id,
           metadata: meta,
-          memory: doc.title || doc.summary || "",
+          memory:
+            doc.title ||
+            doc.description ||
+            meta.description ||
+            doc.summary ||
+            "",
           similarity: 1, // Exact filter match, not semantic
           updatedAt: doc.updatedAt || "",
           documents: [
@@ -211,7 +216,7 @@ export async function GET(request: Request) {
               id: doc.id,
               title: doc.title,
               type: doc.type,
-              summary: doc.summary,
+              summary: doc.description || meta.description || doc.summary,
               createdAt: doc.createdAt,
               updatedAt: doc.updatedAt,
               metadata: meta,

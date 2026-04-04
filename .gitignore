@@ -19,6 +19,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # env files (NEVER COMMIT THESE)
 .env
@@ -34,10 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# agent files (can be committed)
-Gemini.md
-CLAUDE.md
-AGENTS.md
-# Memory persistence mapping
-/memories/repo/
-.env.local
+# memory agents
+/memories/
+

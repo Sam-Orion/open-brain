@@ -1,0 +1,4 @@
+/* Just a quick sanity check of tailwind/css */
+.word-spacing-5 {
+  word-spacing: 5px;
+}
