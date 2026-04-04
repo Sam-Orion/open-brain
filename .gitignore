@@ -37,4 +37,7 @@ next-env.d.ts
 
 # memory agents
 /memories/
+Gemini.md
+CLAUDE.md
+AGENTS.md
 
