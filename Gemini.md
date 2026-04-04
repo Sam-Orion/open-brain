@@ -59,3 +59,10 @@ The app's data models are located in `types/index.ts`. All IDs strictly use `str
 
 ## 🏷️ Type Conventions
 - **Naming Constraints:** We explicitly use `youtube` (not `video`) and `twitter` (not `tweet`) for types on the UI. Ensure any filters (`>youtube`, `>twitter`) or entity type comparisons align with these identifiers strictly. This applies to both the sidebar and search tokens.
+
+
+## OpenBrain Add Thought UI Guidelines
+1. Next.js 14 App Router, Tailwind v4
+2. Optimistic UI is driven by `status` and `supermemory_status` added to `Thought` type in `/types/index.ts`.
+3. The `CaptureModal` is handled by `DashboardClientProvider` catching `window` events.
+4. Use `Processing ({supermemory_status})` to accurately echo ingestion statuses.

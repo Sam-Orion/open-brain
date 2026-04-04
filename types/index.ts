@@ -7,6 +7,13 @@ export interface Thought {
   description: string;
   embed_url?: string;
   thumbnail_url?: string;
+  // Optimistic UI state properties
+  status?: "processing" | "done" | "failed";
+  supermemory_status?: string;
+}
+
+export interface OptimisticThought extends Thought {
+  isOptimistic?: boolean;
 }
 
 export interface Profile {

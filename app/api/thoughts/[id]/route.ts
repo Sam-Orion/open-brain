@@ -129,6 +129,7 @@ export async function GET(
     const mappedThought: Record<string, any> = {
       id: documentDetails.id,
       title: title || "Unknown Title",
+      url: documentDetails.url || meta.url || documentDetails.content || "",
       description:
         (documentDetails as any).description ||
         meta.description ||

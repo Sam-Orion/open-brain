@@ -40,7 +40,7 @@ export default function Sidebar() {
     { label: 'YouTube', id: 'youtube', icon: <PlaySquare className="w-4 h-4" /> },
     { label: 'Articles', id: 'article', icon: <FileText className="w-4 h-4" /> },
     { label: 'Twitter', id: 'twitter', icon: <MessageSquare className="w-4 h-4" /> },
-    { label: 'Docs', id: 'doc', icon: <FileBox className="w-4 h-4" /> },
+    { label: 'PDF', id: 'pdf', icon: <FileBox className="w-4 h-4" /> },
   ];
 
   // 2. Master builder for robust parameter replacement

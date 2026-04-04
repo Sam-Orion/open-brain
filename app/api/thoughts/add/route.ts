@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { url, manualTags = [] } = body;
+    const { url, type, manualTags = [] } = body;
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
@@ -33,7 +33,20 @@ export async function POST(request: Request) {
     let mappedType: "youtube" | "twitter" | "article" | "pdf" = "article";
     const lowerUrl = url.toLowerCase();
 
-    if (lowerUrl.includes("youtube.com") || lowerUrl.includes("youtu.be"))
+    // Use explicitly passed type, else infer from URL
+    if (type?.toLowerCase() === "pdf") mappedType = "pdf";
+    else if (type?.toLowerCase() === "article") mappedType = "article";
+    else if (
+      type?.toLowerCase() === "tweet" ||
+      type?.toLowerCase() === "twitter"
+    )
+      mappedType = "twitter";
+    else if (
+      type?.toLowerCase() === "video" ||
+      type?.toLowerCase() === "youtube"
+    )
+      mappedType = "youtube";
+    else if (lowerUrl.includes("youtube.com") || lowerUrl.includes("youtu.be"))
       mappedType = "youtube";
     else if (lowerUrl.includes("twitter.com") || lowerUrl.includes("x.com"))
       mappedType = "twitter";
@@ -216,6 +229,7 @@ export async function POST(request: Request) {
     const mappedThought: Record<string, any> = {
       id: documentDetails.id,
       title: documentDetails.title || new URL(url).hostname || "Unknown Title",
+      url: documentDetails.url || documentDetails.metadata?.url || url || "",
       description:
         documentDetails.description ||
         documentDetails.metadata?.description ||

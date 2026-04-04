@@ -119,7 +119,10 @@ export default function Header({ user }: { user: any }) {
           Share Brain
         </button>
         
-        <button className="hidden sm:flex items-center gap-2 h-9 px-4 text-sm font-medium bg-zinc-900 text-zinc-50 dark:bg-indigo-500 dark:text-white rounded-md hover:bg-zinc-800 dark:hover:bg-indigo-600 transition-colors shadow-sm">
+        <button 
+          onClick={() => window.dispatchEvent(new CustomEvent('openCaptureModal'))}
+          className="hidden sm:flex items-center gap-2 h-9 px-4 text-sm font-medium bg-zinc-900 text-zinc-50 dark:bg-indigo-500 dark:text-white rounded-md hover:bg-zinc-800 dark:hover:bg-indigo-600 transition-colors shadow-sm"
+        >
           <Plus className="w-4 h-4" />
           Add Thought
         </button>

@@ -15,6 +15,73 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const { id, title, type, tags, description, embed_url, thumbnail_url, url, status, supermemory_status } = thought;
+
+  if (status === "processing") {
+    return (
+      <div className="group break-inside-avoid relative flex flex-col bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/50 rounded-[10px] overflow-hidden shadow-sm transition-all hover:shadow-md animate-in fade-in duration-300">
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <LinkIcon className="w-4 h-4 text-zinc-400" />
+            <h3 className="font-sans font-medium text-sm text-zinc-900 dark:text-zinc-100 line-clamp-1">
+              Adding...
+            </h3>
+          </div>
+          
+          <div className="bg-amber-950/20 dark:bg-amber-950/20 border border-amber-500/20 dark:border-amber-800 text-amber-600 dark:text-amber-400 rounded px-3 py-4 font-mono text-xs flex flex-col justify-center mb-3">
+            <div className="flex items-center justify-center gap-1.5 opacity-80">
+               processing {supermemory_status ? `(${supermemory_status})` : "(extracting)"}
+            </div>
+          </div>
+          
+          {tags && tags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold text-[#7164C0] bg-[#9492DB]/20 uppercase tracking-widest leading-none"
+                >
+                  #{tag.replace(/^#/, "")}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "failed") {
+    return (
+      <div className="group break-inside-avoid relative flex flex-col bg-white dark:bg-zinc-800 border border-red-200 dark:border-red-900/50 rounded-[10px] overflow-hidden shadow-sm transition-all hover:shadow-md animate-in fade-in duration-300">
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <h3 className="font-sans font-medium text-sm text-[#EF4444] line-clamp-1">
+              Failed
+            </h3>
+          </div>
+          
+          <div className="bg-red-500/10 rounded px-3 py-4 font-sans text-[14px] text-zinc-900 dark:text-white flex flex-col justify-center mb-3">
+            Content Ingestion has failed please try again
+          </div>
+          
+          {tags && tags.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-bold text-[#7164C0] bg-[#9492DB]/20 uppercase tracking-widest leading-none"
+                >
+                  #{tag.replace(/^#/, "")}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to completely erase this thought?")) return;
     

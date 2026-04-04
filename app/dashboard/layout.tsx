@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
 import Sidebar from '@/components/dashboard/sidebar';
 import Header from '@/components/dashboard/header';
+import { DashboardClientProvider } from '@/components/dashboard/dashboard-client-provider';
 
 export const metadata = {
   title: 'Dashboard | OpenBrain',
@@ -25,7 +26,9 @@ export default async function DashboardLayout({
       <main className="flex flex-1 flex-col overflow-hidden">
         <Header user={session.user} />
         <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-zinc-950 p-6 md:p-8 relative">
-          {children}
+          <DashboardClientProvider>
+            {children}
+          </DashboardClientProvider>
         </div>
       </main>
     </div>

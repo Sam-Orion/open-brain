@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Thought } from "@/types";
 import { ThoughtCard } from "@/components/dashboard/thought-card";
 
@@ -9,11 +12,87 @@ interface ThoughtGridProps {
 }
 
 export function ThoughtGrid({ initialThoughts, q, tag, type }: ThoughtGridProps) {
+  const [thoughts, setThoughts] = useState<Thought[]>(initialThoughts);
 
-  // Currently we use initialThoughts since server rendering passes this in.
-  // Real implementation for instant Client-side Search SWR:
-  // const { data: thoughts } = useSWR(`/api/thoughts/search?q=${q}&type=${type}`, fetcher, { fallbackData: initialThoughts })
-  const thoughts = initialThoughts;
+  useEffect(() => {
+    setThoughts(initialThoughts);
+  }, [initialThoughts]);
+
+  useEffect(() => {
+    const handleAddThought = async (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { url, type: contentType, tags } = customEvent.detail;
+      
+      const tempId = `temp-${Date.now()}`;
+      const optimisticThought: Thought = {
+        id: tempId,
+        url,
+        type: contentType,
+        tags,
+        title: "Adding...",
+        description: "",
+        status: "processing",
+        supermemory_status: "extracting",
+      };
+
+      setThoughts((prev) => [optimisticThought, ...prev]);
+
+      try {
+        const response = await fetch("/api/thoughts/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, type: contentType, manualTags: tags }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          throw new Error(data.error || "Failed to process thought");
+        }
+
+        // It could be processing or done or failed
+        setThoughts((prev) =>
+          prev.map((t) => (t.id === tempId ? { ...data } : t))
+        );
+
+        // If returned status is still processing, we need to poll
+        if (data.status === "processing") {
+          let currentStatus = "processing";
+          let currentData = data;
+          
+          const intervalId = setInterval(async () => {
+            try {
+              const res = await fetch(`/api/thoughts/${currentData.id}`);
+              if (res.ok) {
+                const refreshed = await res.json();
+                setThoughts((prev) =>
+                  prev.map((t) => (t.id === currentData.id ? { ...refreshed } : t))
+                );
+                if (refreshed.status === "done" || refreshed.status === "failed") {
+                  clearInterval(intervalId);
+                }
+              }
+            } catch (pollErr) {
+              console.error("Polling error", pollErr);
+            }
+          }, 5000);
+        }
+
+      } catch (err: any) {
+        // Update the optimistic thought to failed state
+        setThoughts((prev) =>
+          prev.map((t) =>
+            t.id === tempId
+              ? { ...t, status: "failed", supermemory_status: err.message, title: "Failed" }
+              : t
+          )
+        );
+      }
+    };
+
+    window.addEventListener("addThoughtSubmit", handleAddThought);
+    return () => window.removeEventListener("addThoughtSubmit", handleAddThought);
+  }, []);
 
   // Derive dynamic title based on filters
   let title = "My Cognitive Archive";

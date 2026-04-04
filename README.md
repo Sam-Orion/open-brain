@@ -1,4 +1,18 @@
-# OpenBrain
+## OpenBrain Project
+
+This repository sets up an OpenBrain Next.js dashboard featuring robust local optimisitic UI loading states, and integrates with the Supermemory API.
+
+### Current Features
+- Add Thought Modal (Form) matching precise inline pill tags and `Cmd+Enter` workflows
+- Inline loading state (optimistic injection) mapped directly to Supermemory status stages
+- Failed UI state capturing ingestion breaks
+
+### Getting Started
+
+```bash
+npm install
+npm run dev
+```
 
 A minimalist second-brain application for storing, searching, and managing thoughts, links, and documents.
 
