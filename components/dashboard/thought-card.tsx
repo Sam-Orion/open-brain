@@ -10,9 +10,11 @@ import { ThoughtShareModal } from "./thought-share-modal";
 
 interface ThoughtCardProps {
   thought: Thought;
+  isReadOnly?: boolean;
+  size?: "default" | "large";
 }
 
-export function ThoughtCard({ thought }: ThoughtCardProps) {
+export function ThoughtCard({ thought, isReadOnly = false, size = "default" }: ThoughtCardProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -162,36 +164,46 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
           <div className="text-[#6366F1] shrink-0 flex items-center justify-center" title={thought.type || "Link"}>
             {TypeIcon}
           </div>
-          <h3 className="font-sans font-medium text-sm text-[#18181B] dark:text-[#FAFAFA] truncate">
+          <h3 className={cn(
+            "font-sans font-medium text-[#18181B] dark:text-[#FAFAFA] truncate",
+            size === "large" ? "text-2xl" : "text-sm"
+          )}>
             {thought.title || thought.url || "Untitled Thought"}
           </h3>
         </div>
         
         <div className="flex items-center gap-2 shrink-0">
-          <button 
-            onClick={() => setIsShareModalOpen(true)}
-            className="text-zinc-400 hover:text-[#6366F1] transition-colors" 
-            title="Share Thought"
-          >
-            <Share2 className="w-3.5 h-3.5" />
-          </button>
-          <button 
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="text-zinc-400 hover:text-[#EF4444] transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
-            title="Delete Thought"
-          >
-            {isDeleting ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : (
-              <Trash2 className="w-3.5 h-3.5" />
-            )}
-          </button>
+          {!isReadOnly && (
+            <>
+              <button 
+                onClick={() => setIsShareModalOpen(true)}
+                className="text-zinc-400 hover:text-[#6366F1] transition-colors" 
+                title="Share Thought"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+              </button>
+              <button 
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="text-zinc-400 hover:text-[#EF4444] transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+                title="Delete Thought"
+              >
+                {isDeleting ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="w-3.5 h-3.5" />
+                )}
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       {/* Body / Media Embed */}
-      <div className="w-full relative bg-white dark:bg-black/20 text-sm font-sans text-zinc-700 dark:text-zinc-300 max-h-[400px] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10">
+      <div className={cn(
+        "w-full relative bg-white dark:bg-black/20 font-sans text-zinc-700 dark:text-zinc-300 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10",
+        size === "large" ? "h-auto max-h-none text-lg" : "text-sm max-h-[400px]"
+      )}>
         {(thought.type?.toLowerCase() === "video" || thought.type?.toLowerCase() === "youtube") ? (
           <div className="aspect-video w-full bg-black">
             <iframe 
@@ -218,7 +230,10 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
             </div>
           </div>
         ) : (
-          <div className="p-4 text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+          <div className={cn(
+            "p-4 leading-relaxed text-zinc-600 dark:text-zinc-400",
+            size === "large" ? "text-lg md:text-xl p-8" : "text-[13px]"
+          )}>
              {thought.description ? (
                <p className="whitespace-pre-wrap">{thought.description}</p>
              ) : (
@@ -266,10 +281,13 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
-      <ThoughtShareModal
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        thoughtId={id}
-      />    </div>
+      {!isReadOnly && (
+        <ThoughtShareModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          thoughtId={id}
+        />
+      )}
+    </div>
   );
 }

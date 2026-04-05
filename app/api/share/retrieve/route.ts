@@ -34,6 +34,7 @@ function mapDocumentToThought(doc: any) {
   return {
     id: doc.id,
     title: doc.title || "Unknown Title",
+    url: doc.url || meta.url || "",
     description: doc.description || meta.description || doc.summary || "",
     type: meta.type || doc.type || "article",
     thumbnail_url: doc.ogImage || meta.thumbnail_url || null,
