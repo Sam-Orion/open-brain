@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import React, { useState } from 'react';
 import { Tweet } from 'react-tweet';
 import { useRouter } from "next/navigation";
+import { ThoughtShareModal } from "./thought-share-modal";
 
 interface ThoughtCardProps {
   thought: Thought;
@@ -14,6 +15,7 @@ interface ThoughtCardProps {
 export function ThoughtCard({ thought }: ThoughtCardProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const { id, title, type, tags, description, embed_url, thumbnail_url, url, status, supermemory_status } = thought;
 
@@ -166,7 +168,11 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
         </div>
         
         <div className="flex items-center gap-2 shrink-0">
-          <button className="text-zinc-400 hover:text-[#6366F1] transition-colors" title="Share Thought">
+          <button 
+            onClick={() => setIsShareModalOpen(true)}
+            className="text-zinc-400 hover:text-[#6366F1] transition-colors" 
+            title="Share Thought"
+          >
             <Share2 className="w-3.5 h-3.5" />
           </button>
           <button 
@@ -260,6 +266,10 @@ export function ThoughtCard({ thought }: ThoughtCardProps) {
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
       </div>
-    </div>
+      <ThoughtShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        thoughtId={id}
+      />    </div>
   );
 }

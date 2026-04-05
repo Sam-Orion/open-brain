@@ -27,7 +27,9 @@ A minimalist second-brain application for storing, searching, and managing thoug
 2. **Semantic & Syntax Search:** 
    - Powerful search functionality leveraging both semantic search and precise entity filters.
    - Use `>type` (e.g., `>youtube`) and `/tag` (e.g., `/react`) syntax directly in the search bar.
-3. **Brain Sharing:** Generate shareable tokens to share your entire brain, specific tags, or individual thoughts with others.
+3. **Brain Sharing:** 
+   - **Global Sharing (`GlobalShareModal.tsx`)**: Generates read-only access links for the entire brain or by specific #tag, triggered from the dashboard header.
+   - **Node Access (`ThoughtShareModal.tsx`)**: Generates fully isolated single-thought URLs, triggered direct from thought cards.
 4. **Minimalist Design:** "Swiss Execution" style design with highly functional, distraction-free monochrome UI grids, using Geist fonts.
 
 ## Getting Started

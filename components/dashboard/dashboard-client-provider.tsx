@@ -2,13 +2,18 @@
 
 import { useEffect, useState } from "react";
 import CaptureModal from "@/components/dashboard/capture-modal";
+import { GlobalShareModal } from "@/components/dashboard/global-share-modal";
 
 export function DashboardClientProvider({ children }: { children: React.ReactNode }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isGlobalShareOpen, setIsGlobalShareOpen] = useState(false);
 
   useEffect(() => {
     const handleOpen = () => setIsModalOpen(true);
+    const handleGlobalShareOpen = () => setIsGlobalShareOpen(true);
+    
     window.addEventListener("openCaptureModal", handleOpen);
+    window.addEventListener("openGlobalShareModal", handleGlobalShareOpen);
     
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.metaKey && e.key === "i") { // Or maybe some other combo? Wait, instruction says Header.
@@ -20,6 +25,7 @@ export function DashboardClientProvider({ children }: { children: React.ReactNod
     
     return () => {
       window.removeEventListener("openCaptureModal", handleOpen);
+      window.removeEventListener("openGlobalShareModal", handleGlobalShareOpen);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
@@ -40,6 +46,10 @@ export function DashboardClientProvider({ children }: { children: React.ReactNod
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         onSubmit={handleSubmit} 
+      />
+      <GlobalShareModal 
+        isOpen={isGlobalShareOpen}
+        onClose={() => setIsGlobalShareOpen(false)}
       />
     </>
   );

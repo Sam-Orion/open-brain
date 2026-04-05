@@ -114,7 +114,10 @@ export default function Header({ user }: { user: any }) {
       </div>
 
       <div className="flex items-center gap-3 shrink-0">
-        <button className="hidden sm:flex items-center gap-2 h-9 px-3 text-sm font-medium border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300">
+        <button 
+          onClick={() => window.dispatchEvent(new CustomEvent('openGlobalShareModal'))}
+          className="hidden sm:flex items-center gap-2 h-9 px-3 text-sm font-medium border border-zinc-200 dark:border-zinc-800 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-700 dark:text-zinc-300"
+        >
           <Share className="w-4 h-4" />
           Share Brain
         </button>
